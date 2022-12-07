@@ -1,9 +1,13 @@
-FROM node:16.18.1-alpine
-WORKDIR /app
+FROM node:14.15.4-alpine
+
+WORKDIR /usr/app
 
 COPY package.json .
-RUN npm install --only=production
+RUN npm ci --only=production
 
-COPY server.js .
+COPY . .
 
-CMD [ "npm", "test" ]
+RUN npm run build
+
+# Run the web service on container startup.
+CMD [ "npm", "start" ]
