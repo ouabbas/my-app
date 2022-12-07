@@ -4,6 +4,6 @@ WORKDIR /app
 COPY package.json .
 RUN npm install --only=production
 
-COPY . .
+COPY server.js .
 
-CMD [ "npm", "start" ]
+CMD [ "npm", "test" ]
