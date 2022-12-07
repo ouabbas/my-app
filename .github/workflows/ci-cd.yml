@@ -5,7 +5,6 @@ on:
     branches: [main]
 
 env:
-  CLOUD_RUN_SERVICE_ACCOUNT_EMAIL: ${{ secrets.CLOUD_RUN_SERVICE_ACCOUNT_EMAIL }}
   SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
   CLOUD_RUN_PROJECT_ID: abdc-gmb
   CLOUD_RUN_REGION: europe-west1
@@ -28,14 +27,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - id: 'auth'
-        name: 'Authenticate to Google Cloud'
-        uses: 'google-github-actions/auth@v1'
+      - id: "auth"
+        name: "Authenticate to Google Cloud"
+        uses: "google-github-actions/auth@v1"
         with:
-          credentials_json: '${{ secrets.SERVICE_ACCOUNT_KEY }}'
+          credentials_json: "${{ secrets.SERVICE_ACCOUNT_KEY }}"
 
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v1'
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v1"
 
       - name: Enable the necessary APIs and enable docker auth
         run: |-
@@ -54,10 +53,10 @@ jobs:
           docker push gcr.io/$CLOUD_RUN_PROJECT_ID/$IMAGE_NAME:latest
           docker push gcr.io/$CLOUD_RUN_PROJECT_ID/$IMAGE_NAME:v0.0.1
 
-      - id: 'deploy'
-        uses: 'google-github-actions/deploy-cloudrun@v1'
+      - id: "deploy"
+        uses: "google-github-actions/deploy-cloudrun@v1"
         with:
           service: ${{ env.SERVICE_NAME }}
           image: gcr.io/${{ env.CLOUD_RUN_PROJECT_ID }}/${{ env.IMAGE_NAME }}:v0.0.1
           region: ${{ env.CLOUD_RUN_REGION }}
-          flags: '--allow-unauthenticated'
+          flags: "--allow-unauthenticated"
